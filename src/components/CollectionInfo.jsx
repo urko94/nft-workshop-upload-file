@@ -2,7 +2,7 @@ import { ethers } from 'ethers'
 import React, { useEffect, useState } from 'react'
 import Mint from './Mint'
 
-export default function collection ({ collection, provider, address }) {
+export default function CollectionInfo ({ collection, provider, address }) {
   const [totalSupply] = useState(
     collection.totalSupply.toNumber()
   )

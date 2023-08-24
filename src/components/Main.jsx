@@ -8,6 +8,7 @@ import NftGallery from './NftGallery'
 import CollectionInfo from './CollectionInfo'
 import Spinner from './Spinner'
 import IconWallet from './IconWallet'
+import { FileUploader } from './FileUploader'
 
 export default function Main () {
   const CHAIN_ID = process.env.REACT_APP_CHAIN_ID
@@ -125,6 +126,7 @@ export default function Main () {
     const contract = setupContract()
     return {
       name: await contract.name(),
+      address: contract.address,
       symbol: await contract.symbol(),
       maxSupply: await contract.maxSupply(),
       totalSupply: await contract.totalSupply(),
@@ -133,9 +135,9 @@ export default function Main () {
       drop: await contract.isDrop(),
       dropStart: await contract.dropStart(),
       reserve: await contract.reserve(),
-      price: await contract.price(),
-      royaltiesFees: await contract.royaltiesFees(),
-      royaltiesAddress: await contract.royaltiesAddress()
+      price: await contract.pricePerMint(),
+      royaltiesFees: await contract.getRoyaltyPercentage(),
+      royaltiesAddress: await contract.getRoyaltyRecipient()
     }
   }
 
@@ -203,21 +205,16 @@ export default function Main () {
           <CollectionInfo collection={collectionInfo} provider={provider} address={address} />
         )}
 
+        <FileUploader />
+
         <div className="btn-connect-wrapper">
           <button id="btnConnect" onClick={() => connectWallet()}>
             {loading
-              ? (
-              <Spinner />
-                )
+              ? <Spinner />
               : address
-                ? (
-              <span>
-                <IconWallet /> {address.slice(0, 11)}
-              </span>
-                  )
-                : (
-                    'Connect wallet'
-                  )}
+                ? <span><IconWallet /> {address.slice(0, 11)} </span>
+                : 'Connect wallet'
+            }
           </button>
         </div>
       </div>
